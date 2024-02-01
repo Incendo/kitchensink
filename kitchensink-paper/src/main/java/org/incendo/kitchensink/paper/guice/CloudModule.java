@@ -26,7 +26,7 @@ package org.incendo.kitchensink.paper.guice;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import java.util.Objects;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
@@ -38,10 +38,9 @@ import org.incendo.cloud.translations.LocaleExtractor;
 import org.incendo.cloud.translations.TranslationBundle;
 import org.incendo.cloud.translations.bukkit.BukkitTranslationBundle;
 import org.incendo.kitchensink.command.KitchenSinkCommandSender;
+import org.incendo.kitchensink.configuration.StyleConfiguration;
 import org.incendo.kitchensink.paper.PaperKitchenSink;
 import org.incendo.kitchensink.paper.command.KitchenSinkSenderMapper;
-
-import static net.kyori.adventure.text.Component.text;
 
 /**
  * Module for Cloud bindings.
@@ -63,11 +62,13 @@ public final class CloudModule extends AbstractModule {
      * Provides the command manager.
      *
      * @param kitchenSinkSenderMapper mapper between the Bukkit and KitchenSink command senders
+     * @param styleConfiguration      style configuration
      * @return the command manager
      */
     @Provides
     public CommandManager<KitchenSinkCommandSender> commandManager(
-            final @NonNull KitchenSinkSenderMapper kitchenSinkSenderMapper
+            final @NonNull KitchenSinkSenderMapper kitchenSinkSenderMapper,
+            final @NonNull StyleConfiguration styleConfiguration
     ) {
         final PaperCommandManager<KitchenSinkCommandSender> commandManager = new PaperCommandManager<>(
                 this.paperKitchenSink,
@@ -83,15 +84,14 @@ public final class CloudModule extends AbstractModule {
 
         final LocaleExtractor<KitchenSinkCommandSender> localeExtractor = KitchenSinkCommandSender::locale;
         commandManager.captionRegistry().registerProvider(TranslationBundle.core(localeExtractor));
+        commandManager.captionRegistry().registerProvider(TranslationBundle.resourceBundle(
+                "org.incendo.kitchensink.common.lang.messages", localeExtractor));
         commandManager.captionRegistry().registerProvider(BukkitTranslationBundle.bukkit(localeExtractor));
 
         MinecraftExceptionHandler.<KitchenSinkCommandSender>create(AudienceProvider.nativeAudience())
                 .defaultHandlers()
-                // TOD(City): Style this :)
-                .decorator(component -> text("[KitchenSink]", NamedTextColor.DARK_AQUA)
-                        .append(text(" ", NamedTextColor.WHITE))
-                        .append(component)
-                ).registerTo(commandManager);
+                .decorator(component -> MiniMessage.miniMessage().deserialize(styleConfiguration.prefix()).append(component))
+                .registerTo(commandManager);
 
         return commandManager;
     }

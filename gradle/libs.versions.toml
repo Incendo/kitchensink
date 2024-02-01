@@ -66,6 +66,7 @@ guice = { group = "com.google.inject", name = "guice", version.ref = "guice" }
 auto-factory = { group = "com.google.auto.factory", name = "auto-factory", version.ref = "autoFactory" }
 jakarta-inject = { group = "jakarta.inject", name = "jakarta.inject-api", version.ref = "jakartaInject" }
 adventure = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
+minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure" }
 # - Paper
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
 

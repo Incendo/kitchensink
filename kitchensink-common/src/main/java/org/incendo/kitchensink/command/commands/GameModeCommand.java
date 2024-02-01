@@ -23,21 +23,36 @@
 //
 package org.incendo.kitchensink.command.commands;
 
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import net.kyori.adventure.text.format.NamedTextColor;
+import java.util.Objects;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.Command;
 import org.incendo.cloud.bean.CommandProperties;
+import org.incendo.cloud.caption.CaptionVariable;
+import org.incendo.kitchensink.caption.CaptionKeys;
+import org.incendo.kitchensink.caption.Formatter;
 import org.incendo.kitchensink.command.KitchenSinkCommandBean;
 import org.incendo.kitchensink.command.KitchenSinkCommandSender;
 import org.incendo.kitchensink.entity.player.GameMode;
 import org.incendo.kitchensink.entity.player.KitchenSinkPlayer;
 
-import static net.kyori.adventure.text.Component.text;
 import static org.incendo.kitchensink.command.parser.GameModeParser.gameModeParser;
 
 @Singleton
 public final class GameModeCommand extends KitchenSinkCommandBean {
+
+    private final Formatter formatter;
+
+    /**
+     * Creates a new instance.
+     *
+     * @param formatter caption formatter
+     */
+    @Inject
+    public GameModeCommand(final @NonNull Formatter formatter) {
+        this.formatter = Objects.requireNonNull(formatter, "formatter");
+    }
 
     @Override
     protected @NonNull CommandProperties properties() {
@@ -55,9 +70,13 @@ public final class GameModeCommand extends KitchenSinkCommandBean {
                 .handler((FutureCommandExecutionHandler<KitchenSinkPlayer>) context -> {
                     final GameMode gameMode = context.get("gameMode");
                     return context.sender().gameMode(gameMode).whenComplete(($, error) -> {
-                        context.sender()
-                                .sendMessage(text("Your game mode has been set to ", NamedTextColor.GRAY)
-                                .append(text(gameMode.key(), NamedTextColor.GOLD)));
+                        context.sender().sendMessage(
+                                this.formatter.format(
+                                        context.sender(),
+                                        CaptionKeys.UTILITY_COMMAND_GAMEMODE_UPDATED,
+                                        CaptionVariable.of("gamemode", gameMode.key()) // TODO(City): Use RichVariable
+                                )
+                        );
                     });
                 });
     }

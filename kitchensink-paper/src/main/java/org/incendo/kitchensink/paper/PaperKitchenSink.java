@@ -27,7 +27,9 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.kitchensink.command.CommandService;
+import org.incendo.kitchensink.guice.CaptionModule;
 import org.incendo.kitchensink.guice.CommandModule;
+import org.incendo.kitchensink.guice.ConfigurationModule;
 import org.incendo.kitchensink.paper.entity.PaperPlayerRepository;
 import org.incendo.kitchensink.paper.guice.CloudModule;
 import org.incendo.kitchensink.paper.guice.PaperModule;
@@ -41,7 +43,13 @@ public final class PaperKitchenSink extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        this.injector = Guice.createInjector(new PaperModule(this), new CloudModule(this), new CommandModule());
+        this.injector = Guice.createInjector(
+                new ConfigurationModule(),
+                new CaptionModule(),
+                new PaperModule(this),
+                new CloudModule(this),
+                new CommandModule()
+        );
     }
 
     @Override

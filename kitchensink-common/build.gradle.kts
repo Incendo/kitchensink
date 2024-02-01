@@ -8,7 +8,9 @@ dependencies {
     api(libs.guice)
     api(libs.jakarta.inject)
     api(libs.cloud.translations.core)
+    api(libs.cloud.minecraft.extras)
 
     compileOnlyApi(libs.slf4j)
     compileOnlyApi(libs.adventure)
+    compileOnlyApi(libs.minimessage)
 }
