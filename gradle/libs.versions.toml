@@ -1,0 +1,72 @@
+[plugins]
+cloud-buildLogic-spotless = { id = "org.incendo.cloud-build-logic.spotless", version.ref = "cloud-build-logic" }
+cloud-buildLogic-rootProject-publishing = { id = "org.incendo.cloud-build-logic.publishing.root-project", version.ref = "cloud-build-logic" }
+cloud-buildLogic-rootProject-spotless = { id = "org.incendo.cloud-build-logic.spotless.root-project", version.ref = "cloud-build-logic" }
+# External
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+# Paper
+run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
+pluginyml-paper = { id = "net.minecrell.plugin-yml.paper", version.ref = "pluginymlPaper" }
+
+[versions]
+cloud-build-logic = "0.0.10"
+ktlint = "1.0.1"
+checkstyle = "10.12.5"
+# External
+shadow = "8.1.1"
+# Paper
+runPaper = "2.2.2"
+pluginymlPaper = "0.6.0"
+
+# Kotlin
+kotlin = "1.9.22"
+dokka = "1.9.10"
+coroutines = "1.7.3"
+
+# Cloud
+cloud = "2.0.0-SNAPSHOT"
+
+# External
+# - Common
+immutables = "2.10.0"
+slf4j = "2.0.11"
+guice = "7.0.0"
+autoFactory = "1.1.0"
+jakartaInject = "2.0.1"
+# - Paper
+paper = "1.20.4-R0.1-SNAPSHOT"
+
+# Test
+jupiterEngine = "5.10.1"
+mockitoCore = "4.11.0"
+mockitoJupiter = "4.11.0"
+truth = "1.3.0"
+adventure = "4.15.0"
+
+[libraries]
+cloud-build-logic = { module = "org.incendo:cloud-build-logic", version.ref = "cloud-build-logic" }
+gradleKotlinJvm = { group = "org.jetbrains.kotlin.jvm", name = "org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlin" }
+
+# Cloud
+cloud-core = { group = "org.incendo", name = "cloud-core", version.ref = "cloud" }
+cloud-annotations = { group = "org.incendo", name = "cloud-annotations", version.ref = "cloud" }
+cloud-paper = { group = "org.incendo", name = "cloud-paper", version.ref = "cloud" }
+cloud-minecraft-extras = { group = "org.incendo", name = "cloud-minecraft-extras", version.ref = "cloud" }
+
+# External
+# - Common
+immutables = { group = "org.immutables", name = "value", version.ref = "immutables" }
+slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+guice = { group = "com.google.inject", name = "guice", version.ref = "guice" }
+auto-factory = { group = "com.google.auto.factory", name = "auto-factory", version.ref = "autoFactory" }
+jakarta-inject = { group = "jakarta.inject", name = "jakarta.inject-api", version.ref = "jakartaInject" }
+adventure = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
+# - Paper
+paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
+
+# Test
+jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "jupiterEngine" }
+jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "jupiterEngine" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
+mockito-jupiter = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockitoJupiter" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
