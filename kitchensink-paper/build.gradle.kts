@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.kitchensinkCommon)
     implementation(libs.cloud.paper)
     implementation(libs.cloud.minecraft.extras)
+    implementation(libs.cloud.translations.bukkit)
 
     compileOnlyApi(libs.paper)
 }

@@ -25,6 +25,7 @@ coroutines = "1.7.3"
 
 # Cloud
 cloud = "2.0.0-SNAPSHOT"
+cloudTranslations = "1.0.0-SNAPSHOT"
 
 # External
 # - Common
@@ -48,9 +49,13 @@ cloud-build-logic = { module = "org.incendo:cloud-build-logic", version.ref = "c
 gradleKotlinJvm = { group = "org.jetbrains.kotlin.jvm", name = "org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlin" }
 
 # Cloud
+# - Common
 cloud-core = { group = "org.incendo", name = "cloud-core", version.ref = "cloud" }
 cloud-annotations = { group = "org.incendo", name = "cloud-annotations", version.ref = "cloud" }
+cloud-translations-core = { group = "org.incendo", name = "cloud-translations-core", version.ref = "cloudTranslations" }
+# - Minecraft
 cloud-paper = { group = "org.incendo", name = "cloud-paper", version.ref = "cloud" }
+cloud-translations-bukkit = { group = "org.incendo", name = "cloud-translations-bukkit", version.ref = "cloudTranslations" }
 cloud-minecraft-extras = { group = "org.incendo", name = "cloud-minecraft-extras", version.ref = "cloud" }
 
 # External

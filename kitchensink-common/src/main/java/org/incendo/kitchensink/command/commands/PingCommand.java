@@ -29,7 +29,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.Command;
 import org.incendo.cloud.bean.CommandProperties;
-import org.incendo.cloud.component.DefaultValue;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.kitchensink.command.KitchenSinkCommandBean;
 import org.incendo.kitchensink.command.KitchenSinkCommandSender;
@@ -51,7 +50,7 @@ public final class PingCommand extends KitchenSinkCommandBean {
     protected Command.@NonNull Builder<? extends KitchenSinkCommandSender> configureKitchenSinkCommand(
             final Command.@NonNull Builder<KitchenSinkCommandSender> builder
     ) {
-        return builder.optional("text", greedyStringParser(), DefaultValue.constant(""));
+        return builder.required("text", greedyStringParser());
     }
 
     @Override

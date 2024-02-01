@@ -26,14 +26,22 @@ package org.incendo.kitchensink.paper.guice;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import java.util.Objects;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
 import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.minecraft.extras.AudienceProvider;
+import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.translations.LocaleExtractor;
+import org.incendo.cloud.translations.TranslationBundle;
+import org.incendo.cloud.translations.bukkit.BukkitTranslationBundle;
 import org.incendo.kitchensink.command.KitchenSinkCommandSender;
 import org.incendo.kitchensink.paper.PaperKitchenSink;
 import org.incendo.kitchensink.paper.command.KitchenSinkSenderMapper;
+
+import static net.kyori.adventure.text.Component.text;
 
 /**
  * Module for Cloud bindings.
@@ -72,6 +80,18 @@ public final class CloudModule extends AbstractModule {
         } else if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             commandManager.registerAsynchronousCompletions();
         }
+
+        final LocaleExtractor<KitchenSinkCommandSender> localeExtractor = KitchenSinkCommandSender::locale;
+        commandManager.captionRegistry().registerProvider(TranslationBundle.core(localeExtractor));
+        commandManager.captionRegistry().registerProvider(BukkitTranslationBundle.bukkit(localeExtractor));
+
+        MinecraftExceptionHandler.<KitchenSinkCommandSender>create(AudienceProvider.nativeAudience())
+                .defaultHandlers()
+                // TOD(City): Style this :)
+                .decorator(component -> text("[KitchenSink]", NamedTextColor.DARK_AQUA)
+                        .append(text(" ", NamedTextColor.WHITE))
+                        .append(component)
+                ).registerTo(commandManager);
 
         return commandManager;
     }

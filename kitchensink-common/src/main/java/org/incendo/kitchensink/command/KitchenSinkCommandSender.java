@@ -23,11 +23,19 @@
 //
 package org.incendo.kitchensink.command;
 
+import java.util.Locale;
 import net.kyori.adventure.audience.Audience;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Sender of commands.
  */
 public interface KitchenSinkCommandSender extends Audience {
 
+    /**
+     * Returns the command sender locale.
+     *
+     * @return the locale
+     */
+    @NonNull Locale locale();
 }

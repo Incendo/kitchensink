@@ -24,9 +24,11 @@
 package org.incendo.kitchensink.paper.command;
 
 import java.util.List;
+import java.util.Locale;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.ForwardingAudience;
 import org.bukkit.Bukkit;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.kitchensink.command.KitchenSinkCommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,5 +40,10 @@ final class PaperConsole implements KitchenSinkCommandSender, ForwardingAudience
     @Override
     public @NotNull Iterable<? extends Audience> audiences() {
         return List.of(Bukkit.getConsoleSender());
+    }
+
+    @Override
+    public @NonNull Locale locale() {
+        return Locale.ENGLISH;
     }
 }

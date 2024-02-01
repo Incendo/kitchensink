@@ -25,6 +25,7 @@ package org.incendo.kitchensink.paper.entity;
 
 import com.google.auto.factory.AutoFactory;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
@@ -70,6 +71,11 @@ public final class PaperPlayer implements KitchenSinkPlayer, ForwardingAudience 
     @Override
     public @NotNull Iterable<? extends Audience> audiences() {
         return List.of(this.player);
+    }
+
+    @Override
+    public @NonNull Locale locale() {
+        return this.player.locale();
     }
 
     /**
