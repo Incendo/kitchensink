@@ -26,6 +26,7 @@ package org.incendo.kitchensink.command;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.Command;
 import org.incendo.cloud.bean.CommandBean;
+import org.incendo.cloud.key.CloudKey;
 
 /**
  * An extension of {@link CommandBean} which does extra pre-processing of the commands.
@@ -36,8 +37,18 @@ public abstract class KitchenSinkCommandBean extends CommandBean<KitchenSinkComm
     protected final Command.@NonNull Builder<? extends KitchenSinkCommandSender> configure(
             final Command.@NonNull Builder<KitchenSinkCommandSender> builder
     ) {
-        return this.configureKitchenSinkCommand(builder);
+        return this.configureKitchenSinkCommand(builder)
+                .meta(CloudKey.of("bukkit_description", String.class), this.stringDescription());
     }
+
+    /**
+     * Returns a simple string description of this command.
+     *
+     * <p>This is primarily used in the platform-native help menus.</p>
+     *
+     * @return command description
+     */
+    public abstract String stringDescription();
 
     /**
      * Configures the command and returns the updated builder.

@@ -1,3 +1,5 @@
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+
 plugins {
     id("kitchensink.base-conventions")
     // id("kitchensink.publishing-conventions")
@@ -47,4 +49,13 @@ paper {
     apiVersion = "1.20"
     authors = listOf("Citymonstret")
     prefix = "KitchenSink"
+
+    permissions {
+        register("kitchensink.command.utility.gamemode") {
+            defaultPermission = BukkitPluginDescription.Permission.Default.OP
+        }
+        register("kitchensink.command.utility.gamemode.other") {
+            defaultPermission = BukkitPluginDescription.Permission.Default.OP
+        }
+    }
 }

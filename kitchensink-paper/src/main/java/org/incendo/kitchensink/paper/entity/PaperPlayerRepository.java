@@ -25,6 +25,8 @@ package org.incendo.kitchensink.paper.entity;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,6 +69,11 @@ public final class PaperPlayerRepository implements PlayerRepository<PaperPlayer
     @Override
     public @NonNull PaperPlayer create(final @NonNull Player platformPlayer) {
         return this.players.computeIfAbsent(platformPlayer.getUniqueId(), uuid -> this.playerFactory.create(platformPlayer));
+    }
+
+    @Override
+    public @NonNull Collection<@NonNull PaperPlayer> players() {
+        return List.copyOf(this.players.values());
     }
 
     /**

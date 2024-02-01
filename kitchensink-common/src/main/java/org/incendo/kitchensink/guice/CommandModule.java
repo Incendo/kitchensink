@@ -27,7 +27,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 import org.incendo.kitchensink.command.KitchenSinkCommandBean;
 import org.incendo.kitchensink.command.commands.GameModeCommand;
-import org.incendo.kitchensink.command.commands.PingCommand;
+import org.incendo.kitchensink.command.commands.GameModeOtherCommand;
 
 /**
  * Command bindings.
@@ -40,7 +40,7 @@ public final class CommandModule extends AbstractModule {
                 this.binder(),
                 KitchenSinkCommandBean.class
         );
-        commandBinder.addBinding().to(PingCommand.class);
         commandBinder.addBinding().to(GameModeCommand.class);
+        commandBinder.addBinding().to(GameModeOtherCommand.class);
     }
 }

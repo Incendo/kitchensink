@@ -54,6 +54,7 @@ public final class PaperModule extends AbstractModule {
     @Override
     protected void configure() {
         this.bind(new TypeLiteral<PlayerRepository<PaperPlayer, Player>>() {}).to(PaperPlayerRepository.class);
+        this.bind(new TypeLiteral<PlayerRepository<?, ?>>() {}).to(PaperPlayerRepository.class);
         this.bind(Executor.class).annotatedWith(MainThreadExecutor.class).toProvider(() -> this.paperKitchenSink.getServer()
                 .getScheduler().getMainThreadExecutor(this.paperKitchenSink));
     }

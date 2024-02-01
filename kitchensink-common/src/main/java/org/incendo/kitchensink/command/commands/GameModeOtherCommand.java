@@ -34,24 +34,29 @@ import org.incendo.kitchensink.caption.CaptionKeys;
 import org.incendo.kitchensink.caption.Formatter;
 import org.incendo.kitchensink.command.KitchenSinkCommandBean;
 import org.incendo.kitchensink.command.KitchenSinkCommandSender;
+import org.incendo.kitchensink.entity.PlayerRepository;
 import org.incendo.kitchensink.entity.player.GameMode;
 import org.incendo.kitchensink.entity.player.KitchenSinkPlayer;
 
 import static org.incendo.kitchensink.command.parser.GameModeParser.gameModeParser;
+import static org.incendo.kitchensink.command.parser.PlayerParser.playerParser;
 
 @Singleton
-public final class GameModeCommand extends KitchenSinkCommandBean {
+public final class GameModeOtherCommand extends KitchenSinkCommandBean {
 
     private final Formatter formatter;
+    private final PlayerRepository<?, ?> playerRepository;
 
     /**
      * Creates a new instance.
      *
-     * @param formatter caption formatter
+     * @param formatter        caption formatter
+     * @param playerRepository repository for players
      */
     @Inject
-    public GameModeCommand(final @NonNull Formatter formatter) {
+    public GameModeOtherCommand(final @NonNull Formatter formatter, final @NonNull PlayerRepository<?, ?> playerRepository) {
         this.formatter = Objects.requireNonNull(formatter, "formatter");
+        this.playerRepository = Objects.requireNonNull(playerRepository, "playerRepository");
     }
 
     @Override
@@ -61,7 +66,7 @@ public final class GameModeCommand extends KitchenSinkCommandBean {
 
     @Override
     public String stringDescription() {
-        return "Set your own game mode";
+        return "Set a player's game mode";
     }
 
     @Override
@@ -69,16 +74,19 @@ public final class GameModeCommand extends KitchenSinkCommandBean {
             final Command.@NonNull Builder<KitchenSinkCommandSender> builder
     ) {
         return builder
-                .permission("kitchensink.command.utility.gamemode")
+                .permission("kitchensink.command.utility.gamemode.other")
                 .required("gameMode", gameModeParser())
-                .senderType(KitchenSinkPlayer.class)
-                .handler((FutureCommandExecutionHandler<KitchenSinkPlayer>) context -> {
+                .required("target", playerParser(this.playerRepository))
+                .handler((FutureCommandExecutionHandler<KitchenSinkCommandSender>) context -> {
                     final GameMode gameMode = context.get("gameMode");
-                    return context.sender().gameMode(gameMode).whenComplete(($, error) -> {
+                    final KitchenSinkPlayer target = context.get("target");
+
+                    return target.gameMode(gameMode).whenComplete(($, error) -> {
                         context.sender().sendMessage(
                                 this.formatter.format(
                                         context.sender(),
-                                        CaptionKeys.UTILITY_COMMAND_GAMEMODE_UPDATED,
+                                        CaptionKeys.UTILITY_COMMAND_GAMEMODE_UPDATED_OTHER,
+                                        CaptionVariable.of("target", target.name()),
                                         CaptionVariable.of("gamemode", gameMode.key()) // TODO(City): Use RichVariable
                                 )
                         );

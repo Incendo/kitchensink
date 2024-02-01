@@ -23,6 +23,7 @@
 //
 package org.incendo.kitchensink.entity;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -59,4 +60,11 @@ public interface PlayerRepository<T extends KitchenSinkPlayer, U> {
      * @return created player
      */
     @NonNull T create(@NonNull U platformPlayer);
+
+    /**
+     * Returns all players.
+     *
+     * @return all players
+     */
+    @NonNull Collection<@NonNull T> players();
 }

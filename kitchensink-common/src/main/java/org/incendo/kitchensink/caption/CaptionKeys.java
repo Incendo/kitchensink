@@ -32,6 +32,10 @@ public final class CaptionKeys {
      * Variables: {@code <gamemode>}.
      */
     public static final Caption UTILITY_COMMAND_GAMEMODE_UPDATED = of("utility.command.gamemode.updated");
+    /**
+     * Variables: {@code <target>}, {@code <gamemode>}.
+     */
+    public static final Caption UTILITY_COMMAND_GAMEMODE_UPDATED_OTHER = of("utility.command.gamemode.updated.other");
 
     private static @NonNull Caption of(final @NonNull String key) {
         return Caption.of(key);
