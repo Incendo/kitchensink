@@ -24,16 +24,21 @@
 package org.incendo.kitchensink.paper.entity;
 
 import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.ForwardingAudience;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.incendo.kitchensink.entity.KitchenSinkPlayer;
+import org.incendo.kitchensink.entity.player.GameMode;
+import org.incendo.kitchensink.entity.player.KitchenSinkPlayer;
+import org.incendo.kitchensink.paper.guice.qualifier.MainThreadExecutor;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -43,14 +48,17 @@ import org.jetbrains.annotations.NotNull;
 public final class PaperPlayer implements KitchenSinkPlayer, ForwardingAudience {
 
     private final Player player;
+    private final Executor mainThreadExecutor;
 
     /**
      * Creates a new player instance.
      *
-     * @param player backing Paper player
+     * @param player             backing Paper player
+     * @param mainThreadExecutor main thread executor
      */
-    public PaperPlayer(final @NonNull Player player) {
+    public PaperPlayer(final @NonNull Player player, @Provided @MainThreadExecutor final @NonNull Executor mainThreadExecutor) {
         this.player = Objects.requireNonNull(player, "player");
+        this.mainThreadExecutor = Objects.requireNonNull(mainThreadExecutor, "mainThreadExecutor");
     }
 
     @Override
@@ -76,6 +84,18 @@ public final class PaperPlayer implements KitchenSinkPlayer, ForwardingAudience 
     @Override
     public @NonNull Locale locale() {
         return this.player.locale();
+    }
+
+    @Override
+    public @NonNull GameMode gameMode() {
+        return GameMode.fromId(this.player.getGameMode().getValue());
+    }
+
+    @Override
+    public @NonNull CompletableFuture<Void> gameMode(final @NonNull GameMode gameMode) {
+        return CompletableFuture.runAsync(() -> {
+            this.player.setGameMode(org.bukkit.GameMode.getByValue(gameMode.id()));
+        }, this.mainThreadExecutor);
     }
 
     /**

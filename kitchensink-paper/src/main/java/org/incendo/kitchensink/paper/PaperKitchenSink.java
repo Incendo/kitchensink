@@ -41,7 +41,7 @@ public final class PaperKitchenSink extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        this.injector = Guice.createInjector(new PaperModule(), new CloudModule(this), new CommandModule());
+        this.injector = Guice.createInjector(new PaperModule(this), new CloudModule(this), new CommandModule());
     }
 
     @Override

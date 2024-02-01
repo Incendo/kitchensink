@@ -25,18 +25,36 @@ package org.incendo.kitchensink.paper.guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
+import java.util.Objects;
+import java.util.concurrent.Executor;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.kitchensink.entity.PlayerRepository;
+import org.incendo.kitchensink.paper.PaperKitchenSink;
 import org.incendo.kitchensink.paper.entity.PaperPlayer;
 import org.incendo.kitchensink.paper.entity.PaperPlayerRepository;
+import org.incendo.kitchensink.paper.guice.qualifier.MainThreadExecutor;
 
 /**
  * Module for Paper-specific bindings.
  */
 public final class PaperModule extends AbstractModule {
 
+    private final PaperKitchenSink paperKitchenSink;
+
+    /**
+     * Creates a new paper module instance.
+     *
+     * @param paperKitchenSink plugin that is creating the instance
+     */
+    public PaperModule(final @NonNull PaperKitchenSink paperKitchenSink) {
+        this.paperKitchenSink = Objects.requireNonNull(paperKitchenSink, "paperKitchenSink");
+    }
+
     @Override
     protected void configure() {
         this.bind(new TypeLiteral<PlayerRepository<PaperPlayer, Player>>() {}).to(PaperPlayerRepository.class);
+        this.bind(Executor.class).annotatedWith(MainThreadExecutor.class).toProvider(() -> this.paperKitchenSink.getServer()
+                .getScheduler().getMainThreadExecutor(this.paperKitchenSink));
     }
 }

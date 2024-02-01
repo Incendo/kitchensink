@@ -21,8 +21,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-package org.incendo.kitchensink;
+package org.incendo.kitchensink.entity.player;
 
-public abstract class KitchenSink {
+import java.util.concurrent.CompletableFuture;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.incendo.kitchensink.command.KitchenSinkCommandSender;
+import org.incendo.kitchensink.entity.KitchenSinkEntity;
 
+/**
+ * A player.
+ */
+public interface KitchenSinkPlayer extends KitchenSinkEntity, KitchenSinkCommandSender {
+
+    /**
+     * Returns the current game mode.
+     *
+     * @return the game mode
+     */
+    @NonNull GameMode gameMode();
+
+    /**
+     * Sets the player game mode.
+     *
+     * @param gameMode new game mode
+     * @return future that completes when the game mode has been updated
+     */
+    @NonNull CompletableFuture<Void> gameMode(@NonNull GameMode gameMode);
 }

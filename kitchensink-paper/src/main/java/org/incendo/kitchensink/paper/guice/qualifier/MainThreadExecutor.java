@@ -21,14 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-package org.incendo.kitchensink.entity;
+package org.incendo.kitchensink.paper.guice.qualifier;
 
-import org.incendo.kitchensink.command.KitchenSinkCommandSender;
+import jakarta.inject.Qualifier;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/**
- * A player.
- */
-public interface KitchenSinkPlayer extends KitchenSinkEntity, KitchenSinkCommandSender {
-
-
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface MainThreadExecutor {
 }

@@ -26,6 +26,7 @@ package org.incendo.kitchensink.entity;
 import java.util.Optional;
 import java.util.UUID;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.incendo.kitchensink.entity.player.KitchenSinkPlayer;
 
 /**
  * Repository that contains {@link KitchenSinkPlayer players}.
