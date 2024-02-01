@@ -48,7 +48,7 @@ paper {
     main = "org.incendo.kitchensink.paper.PaperKitchenSink"
     apiVersion = "1.20"
     authors = listOf("Citymonstret")
-    prefix = "KitchenSink"
+    name = "KitchenSink"
 
     permissions {
         register("kitchensink.command.utility.gamemode") {

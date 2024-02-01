@@ -4,11 +4,15 @@ plugins {
 }
 
 dependencies {
-    api(libs.cloud.core)
     api(libs.guice)
     api(libs.jakarta.inject)
+
+    api(libs.cloud.core)
     api(libs.cloud.translations.core)
     api(libs.cloud.minecraft.extras)
+
+    api(libs.configurate.yaml)
+    api(libs.configurate.extra.guice)
 
     compileOnlyApi(libs.slf4j)
     compileOnlyApi(libs.adventure)

@@ -23,42 +23,65 @@
 //
 package org.incendo.kitchensink.configuration;
 
-import jakarta.inject.Singleton;
+import java.util.Locale;
+import java.util.Objects;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.spongepowered.configurate.ConfigurationNode;
 
-// TODO(City): Use configurate.
-@Singleton
 public final class StyleConfigurationImpl implements StyleConfiguration {
+
+    private final ConfigurationNode configurationNode;
+
+    /**
+     * Creates a new style configuration instance.
+     *
+     * @param configurationNode node which contains the configured values
+     */
+    public StyleConfigurationImpl(final @NonNull ConfigurationNode configurationNode) {
+        this.configurationNode = Objects.requireNonNull(configurationNode, "configurationNode");
+    }
 
     @Override
     public @NonNull String prefix() {
-        return "<dark_aqua>[KitchenSink] </dark_aqua>";
+        return Objects.requireNonNull(this.configurationNode.node("prefix").getString(), "prefix");
     }
 
     @Override
     public @NonNull TextColor primaryColor() {
-        return NamedTextColor.GRAY;
+        return Objects.requireNonNull(readColor(this.configurationNode.node("primary")), "primary");
     }
 
     @Override
     public @NonNull TextColor accentColor() {
-        return NamedTextColor.DARK_AQUA;
+        return Objects.requireNonNull(readColor(this.configurationNode.node("accent")), "accent");
     }
 
     @Override
     public @NonNull TextColor highlightColor() {
-        return NamedTextColor.GOLD;
+        return Objects.requireNonNull(readColor(this.configurationNode.node("highlight")), "highlight");
     }
 
     @Override
     public @NonNull TextColor errorColor() {
-        return NamedTextColor.RED;
+        return Objects.requireNonNull(readColor(this.configurationNode.node("error")), "error");
     }
 
     @Override
     public @NonNull TextColor warningColor() {
-        return TextColor.color(0xFF8033);
+        return Objects.requireNonNull(readColor(this.configurationNode.node("warning")), "warning");
+    }
+
+    private static @Nullable TextColor readColor(final @NonNull ConfigurationNode node) {
+        final String color = node.getString();
+        if (color == null) {
+            return null;
+        }
+        if (color.startsWith("#")) {
+            return TextColor.fromCSSHexString(color);
+        }
+        return NamedTextColor.NAMES.value(color.toLowerCase(Locale.ROOT));
     }
 }

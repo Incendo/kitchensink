@@ -24,16 +24,76 @@
 package org.incendo.kitchensink.guice;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Objects;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.kitchensink.configuration.StyleConfiguration;
 import org.incendo.kitchensink.configuration.StyleConfigurationImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 /**
  * Configuration bindings.
  */
 public final class ConfigurationModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
-        bind(StyleConfiguration.class).to(StyleConfigurationImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationModule.class);
+
+    private final Path rootPath;
+
+    /**
+     * Creates a new configuration module.
+     *
+     * @param rootPath root path
+     */
+    public ConfigurationModule(final @NonNull Path rootPath) {
+        this.rootPath = Objects.requireNonNull(rootPath, "rootPath");
+
+        if (!Files.exists(this.rootPath)) {
+            try {
+                Files.createDirectory(this.rootPath);
+            } catch (final IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * Creates the style configuration.
+     *
+     * @return the style configuration
+     */
+    @Provides
+    public @NonNull StyleConfiguration styleConfiguration() {
+        return new StyleConfigurationImpl(this.readConfig("style.yml"));
+    }
+
+    private @NonNull CommentedConfigurationNode readConfig(final @NonNull String name) {
+        final Path path = this.rootPath.resolve(name);
+        if (!Files.exists(path)) {
+            try (InputStream inputStream = this.getClass().getResourceAsStream("/default_config/" + name)){
+                Files.copy(inputStream, path);
+            } catch (final Exception e) {
+                LOGGER.error("Failed to copy default config '{}'", name, e);
+            }
+        }
+
+        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(path)
+                .build();
+
+        final CommentedConfigurationNode node;
+        try {
+            return loader.load();
+        } catch (ConfigurateException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

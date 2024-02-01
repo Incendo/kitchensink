@@ -1,0 +1,6 @@
+prefix: '<dark_aqua>[KitchenSink] </dark_aqua>'
+primary: GRAY
+accent: DARK_AQUA
+highlight: GOLD
+error: RED
+warning: '#FF8033'

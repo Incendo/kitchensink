@@ -34,6 +34,7 @@ slf4j = "2.0.11"
 guice = "7.0.0"
 autoFactory = "1.1.0"
 jakartaInject = "2.0.1"
+configurate = "4.2.0-SNAPSHOT"
 # - Paper
 paper = "1.20.4-R0.1-SNAPSHOT"
 
@@ -67,6 +68,8 @@ auto-factory = { group = "com.google.auto.factory", name = "auto-factory", versi
 jakarta-inject = { group = "jakarta.inject", name = "jakarta.inject-api", version.ref = "jakartaInject" }
 adventure = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
 minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure" }
+configurate-yaml = { group = "org.spongepowered", name = "configurate-yaml", version.ref = "configurate" }
+configurate-extra-guice = { group = "org.spongepowered", name = "configurate-extra-guice", version.ref = "configurate" }
 # - Paper
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
 
